@@ -1,10 +1,8 @@
 package irismiddleware
 
 import (
-	"bytes"
 	"context"
 	_ "embed"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -13,6 +11,7 @@ import (
 	"net/url"
 	"testing"
 
+	"github.com/deepmap/oapi-codegen/pkg/testutil"
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/getkin/kin-openapi/openapi3filter"
 	"github.com/kataras/iris/v12"
@@ -29,18 +28,8 @@ func doGet(t *testing.T, i *iris.Application, rawURL string) *httptest.ResponseR
 		t.Fatalf("Invalid url: %s", rawURL)
 	}
 
-	r, err := http.NewRequest(http.MethodGet, u.String(), nil)
-	if err != nil {
-		t.Fatalf("Could not construct a request: %s", rawURL)
-	}
-	r.Header.Set("accept", "application/json")
-	r.Header.Set("host", u.Host)
-
-	tt := httptest.NewRecorder()
-
-	i.ServeHTTP(tt, r)
-
-	return tt
+	response := testutil.NewRequest().Get(u.RequestURI()).WithHost(u.Host).WithAcceptJson().GoWithHTTPHandler(t, i)
+	return response.Recorder
 }
 
 func doPost(t *testing.T, i *iris.Application, rawURL string, jsonBody interface{}) *httptest.ResponseRecorder {
@@ -49,24 +38,8 @@ func doPost(t *testing.T, i *iris.Application, rawURL string, jsonBody interface
 		t.Fatalf("Invalid url: %s", rawURL)
 	}
 
-	body, err := json.Marshal(jsonBody)
-	if err != nil {
-		t.Fatalf("Could not marshal request body: %v", err)
-	}
-
-	r, err := http.NewRequest(http.MethodPost, u.String(), bytes.NewReader(body))
-	if err != nil {
-		t.Fatalf("Could not construct a request for URL %s: %v", rawURL, err)
-	}
-	r.Header.Set("accept", "application/json")
-	r.Header.Set("content-type", "application/json")
-	r.Header.Set("host", u.Host)
-
-	tt := httptest.NewRecorder()
-
-	i.ServeHTTP(tt, r)
-
-	return tt
+	response := testutil.NewRequest().Post(u.RequestURI()).WithHost(u.Host).WithJsonBody(jsonBody).GoWithHTTPHandler(t, i)
+	return response.Recorder
 }
 
 func TestOapiRequestValidator(t *testing.T) {
