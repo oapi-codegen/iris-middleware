@@ -1,11 +1,13 @@
 module github.com/oapi-codegen/iris-middleware
 
-go 1.20
+go 1.21
+
+toolchain go1.21.1
 
 require (
 	github.com/deepmap/oapi-codegen v1.14.0
 	github.com/getkin/kin-openapi v0.118.0
-	github.com/kataras/iris/v12 v12.2.6-0.20230908161203-24ba4e8933b9
+	github.com/kataras/iris/v12 v12.2.5
 	github.com/stretchr/testify v1.8.4
 )
 
