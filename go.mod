@@ -3,7 +3,7 @@ module github.com/oapi-codegen/iris-middleware
 go 1.20
 
 require (
-	github.com/getkin/kin-openapi v0.118.0
+	github.com/getkin/kin-openapi v0.122.0
 	github.com/kataras/iris/v12 v12.2.6-0.20230908161203-24ba4e8933b9
 	github.com/stretchr/testify v1.8.4
 )
@@ -39,7 +39,7 @@ require (
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/microcosm-cc/bluemonday v1.0.25 // indirect
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
-	github.com/perimeterx/marshmallow v1.1.4 // indirect
+	github.com/perimeterx/marshmallow v1.1.5 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/schollz/closestmatch v2.1.0+incompatible // indirect
