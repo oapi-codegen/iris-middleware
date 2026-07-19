@@ -80,7 +80,7 @@ func TestOapiRequestValidator(t *testing.T) {
 	// access to "someScope", but disallow others.
 	options := Options{
 		ErrorHandler: func(ctx iris.Context, message string, statusCode int) {
-			ctx.StopWithText(statusCode, "test: "+message)
+			ctx.StopWithText(statusCode, "test: %s", message)
 		},
 		Options: openapi3filter.Options{
 			AuthenticationFunc: func(ctx context.Context, input *openapi3filter.AuthenticationInput) error {
