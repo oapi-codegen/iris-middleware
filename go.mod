@@ -3,7 +3,7 @@ module github.com/oapi-codegen/iris-middleware
 go 1.25.0
 
 require (
-	github.com/getkin/kin-openapi v0.142.0
+	github.com/getkin/kin-openapi v0.143.0
 	github.com/kataras/iris/v12 v12.2.11
 	github.com/stretchr/testify v1.11.1
 )
