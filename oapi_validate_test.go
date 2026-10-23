@@ -443,3 +443,102 @@ func TestOapiRequestValidatorWithOptionsMultiErrorAndCustomHandler(t *testing.T)
 		called = false
 	}
 }
+
+func TestOapiRequestValidatorKeepValidatedValue(t *testing.T) {
+	swagger, err := openapi3.NewLoader().LoadFromData(testSchema)
+	require.NoError(t, err, "Error initializing swagger")
+
+	type validatedValuer interface {
+		ValidatedValue() any
+	}
+
+	tests := []struct {
+		name string
+		// options is nil to exercise OapiRequestValidator(spec).
+		options *Options
+		// wantValidatedValue is whether the handler should see a request body
+		// exposing ValidatedValue().
+		wantValidatedValue bool
+	}{
+		{
+			name:               "no options",
+			options:            nil,
+			wantValidatedValue: true,
+		},
+		{
+			name:               "empty options",
+			options:            &Options{},
+			wantValidatedValue: true,
+		},
+		{
+			name:               "discard validated value",
+			options:            &Options{DiscardValidatedValue: true},
+			wantValidatedValue: false,
+		},
+		{
+			name: "exclude request body",
+			options: &Options{
+				Options: openapi3filter.Options{ExcludeRequestBody: true},
+			},
+			// The body is not validated, so there is no validated value.
+			wantValidatedValue: false,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			i := iris.New()
+			if tc.options == nil {
+				i.Use(OapiRequestValidator(swagger))
+			} else {
+				i.Use(OapiRequestValidatorWithOptions(swagger, tc.options))
+			}
+
+			called := false
+			var (
+				isValidatedValuer bool
+				validatedValue    any
+				bodyBytes         []byte
+				readErr           error
+			)
+			i.Post("/resource", func(ctx iris.Context) {
+				called = true
+				body := ctx.Request().Body
+				var vv validatedValuer
+				vv, isValidatedValuer = body.(validatedValuer)
+				if isValidatedValuer {
+					validatedValue = vv.ValidatedValue()
+				}
+				bodyBytes, readErr = io.ReadAll(body)
+				ctx.StatusCode(http.StatusNoContent)
+			})
+
+			require.NoError(t, i.Build())
+
+			reqBody := struct {
+				Name string `json:"name"`
+			}{
+				Name: "Marcin",
+			}
+			res := doPost(t, i, "http://deepmap.ai/resource", reqBody)
+			assert.Equal(t, http.StatusNoContent, res.Code)
+			require.True(t, called, "Handler should have been called")
+
+			// The body must remain readable with the original bytes.
+			require.NoError(t, readErr)
+			assert.Equal(t, `{"name":"Marcin"}`, string(bodyBytes))
+
+			assert.Equal(t, tc.wantValidatedValue, isValidatedValuer,
+				"request body ValidatedValue() presence")
+			if tc.wantValidatedValue {
+				assert.Equal(t, map[string]any{"name": "Marcin"}, validatedValue)
+			}
+
+			// The caller's openapi3filter options must not be mutated.
+			if tc.options != nil {
+				assert.False(t, tc.options.Options.KeepValidatedValue,
+					"caller's openapi3filter.Options should not be modified")
+			}
+		})
+	}
+}
