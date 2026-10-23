@@ -3,7 +3,7 @@ module github.com/oapi-codegen/iris-middleware
 go 1.25.0
 
 require (
-	github.com/getkin/kin-openapi v0.143.0
+	github.com/getkin/kin-openapi v0.149.0
 	github.com/kataras/iris/v12 v12.2.11
 	github.com/stretchr/testify v1.11.1
 )
@@ -41,7 +41,7 @@ require (
 	github.com/oasdiff/yaml3 v0.0.14 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2 // indirect
+	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3 // indirect
 	github.com/schollz/closestmatch v2.1.0+incompatible // indirect
 	github.com/sirupsen/logrus v1.9.4 // indirect
 	github.com/tdewolff/minify/v2 v2.24.13 // indirect
