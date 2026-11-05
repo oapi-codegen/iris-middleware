@@ -5,7 +5,7 @@ go 1.25.0
 require (
 	github.com/getkin/kin-openapi v0.152.0
 	github.com/kataras/iris/v12 v12.2.11
-	github.com/stretchr/testify v1.11.1
+	github.com/stretchr/testify v1.12.1
 )
 
 require (
@@ -16,7 +16,6 @@ require (
 	github.com/Shopify/goreferrer v0.0.0-20250617153402-88c1d9a79b05 // indirect
 	github.com/andybalholm/brotli v1.2.2 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
-	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/flosch/pongo2/v4 v4.0.2 // indirect
 	github.com/go-openapi/jsonpointer v1.0.0 // indirect
@@ -39,7 +38,6 @@ require (
 	github.com/microcosm-cc/bluemonday v1.0.27 // indirect
 	github.com/oasdiff/yaml v0.1.1 // indirect
 	github.com/oasdiff/yaml3 v0.0.14 // indirect
-	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3 // indirect
 	github.com/schollz/closestmatch v2.1.0+incompatible // indirect
@@ -50,6 +48,7 @@ require (
 	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/yosssi/ace v0.0.5 // indirect
+	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	golang.org/x/crypto v0.54.0 // indirect
 	golang.org/x/exp v0.0.0-20260718201538-764159d718ef // indirect
 	golang.org/x/net v0.57.0 // indirect
